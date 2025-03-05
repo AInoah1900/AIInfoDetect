@@ -78,8 +78,8 @@ git clone https://github.com/TeamWiseFlow/wiseflow.git
 linux/macos 用户请执行 
 
 ```bash
-chmod +x install_pocketbase
-./install_pocketbase
+chmod +x install_pocketbase.sh
+./install_pocketbase.sh
 ```
 
 **windows 用户请执行 [install_pocketbase.ps1](./install_pocketbase.ps1) 脚本**
