@@ -73,24 +73,29 @@ wiseflow自2024年6月底发布 V0.3.0版本来受到了开源社区的广泛关
 git clone https://github.com/TeamWiseFlow/wiseflow.git
 ```
 
-### 2. 执行根目录下的 install_pocketbase 脚本
+### 2. 下载安装数据库pocketbase 
 
-linux/macos 用户请执行 
-
+linux/macos 用户请执行
 ```bash
-chmod +x install_pocketbase
-./install_pocketbase
+chmod +x install_pocketbase.sh # 赋予执行权限
+
+./install_pocketbase.sh # 安装pocketbase数据库
+
+./pocketbase serve # 启动pocketBase数据库
 ```
+pocketbase数据库 Web 管理面板，地址：http://127.0.0.1:8090/
 
 **windows 用户请执行 [install_pocketbase.ps1](./install_pocketbase.ps1) 脚本**
 
-wiseflow 0.3.x版本使用 pocketbase 作为数据库，你当然也可以手动下载 pocketbase 客户端 (记得下载0.23.4版本，并放入 [pb](./pb) 目录下) 以及手动完成superuser的创建(记得存入.env文件)
+#### 备注：
+1、安装过程中，建议选择v0.23.4版本pocketbase，同时要求你输入数据库的登录账号和密码（一定要记住，后续配置项目环境，以及登录数据库管理后台会用到）。
 
-具体可以参考 [pb/README.md](/pb/README.md)
+2、wiseflow 0.3.x版本使用 pocketbase 作为数据库，你当然也可以手动下载 pocketbase 客户端 (记得下载0.23.4版本，并放入 [pb](./pb) 目录下) 以及手动完成superuser的创建(记得存入.env文件)具体可以参考 [pb/README.md](/pb/README.md)
 
-### 3. 继续配置 core/.env 文件
 
-🌟 **这里与之前版本不同**，V0.3.5开始需要把 .env 放置在 [core](./core) 文件夹中。
+### 3. 配置项目环境变量
+
+🌟 **这里与之前版本不同**，V0.3.5开始需要把 .env 放置在 [core](./core) 文件夹中， 即yourpath/core/.env 文件。
 
 #### 3.1 大模型相关配置
 
@@ -103,7 +108,7 @@ wiseflow 是 LLM 原生应用，请务必保证为程序提供稳定的 LLM 服�
 siliconflow（硅基流动）提供大部分主流开源模型的在线 MaaS 服务，凭借着自身的加速推理技术积累，其服务速度和价格方面都有很大优势。使用 siliconflow 的服务时，.env的配置可以参考如下：
 
 ```
-LLM_API_KEY=Your_API_KEY
+LLM_API_KEY=Your_API_KEY  #（备注：替换层自己的API KEY）
 LLM_API_BASE="https://api.siliconflow.cn/v1"
 PRIMARY_MODEL="Qwen/Qwen2.5-32B-Instruct"
 SECONDARY_MODEL="Qwen/Qwen2.5-14B-Instruct"
@@ -127,12 +132,12 @@ VL_MODEL="gpt-4o"
 
 😄 欢迎使用 [AiHubMix邀请链接](https://aihubmix.com?aff=Gp54) 注册 🌹
 
-#### 本地部署大模型服务
+#### 推荐3：本地部署大模型服务
 
 以 Xinference 为例，.env 配置可以参考如下：
 
 ```
-# LLM_API_KEY='' 本地服务无需这一项，请注释掉或删除
+# LLM_API_KEY=''  #（备注：本地服务无需这一项，请注释掉或删除）
 LLM_API_BASE='http://127.0.0.1:9997'
 PRIMARY_MODEL=启动的模型 ID
 VL_MODEL=启动的模型 ID
@@ -141,7 +146,7 @@ VL_MODEL=启动的模型 ID
 #### 3.2 pocketbase 账号密码配置
 
 ```
-PB_API_AUTH="test@example.com|1234567890" 
+PB_API_AUTH="test@example.com|1234567890" # 配置前面输入的pocketbase数据库登录账号密码
 ```
 
 这里pocketbase 数据库的 superuser 用户名和密码，记得用 | 分隔 (如果 install_pocketbase.sh 脚本执行成功，这一项应该已经存在了)
@@ -150,7 +155,7 @@ PB_API_AUTH="test@example.com|1234567890"
 #### 3.3 智谱（bigmodel）平台key设置（用于搜索引擎服务）
 
 ```
-ZHIPU_API_KEY=Your_API_KEY
+ZHIPU_API_KEY=Your_API_KEY #（备注：替换层自己的API KEY）
 ```
 
 （申请地址：https://bigmodel.cn/ 目前免费）
@@ -189,13 +194,17 @@ conda activate wiseflow
 ```bash
 cd wiseflow
 cd core
-pip install -r requirements.txt
+pip install -r requirements.txt # 安装python依赖库
+
+playwright install # 下载 Playwright 需要的浏览器（Chromium、Firefox、WebKit）
+
 ```
 
 之后 MacOS&Linux 用户执行
 
 ```bash
-chmod +x run.sh
+chmod +x run.sh #赋予执行全县
+
 ./run.sh
 ```
 
@@ -204,6 +213,7 @@ Windows 用户执行
 ```bash
 python windows_run.py
 ```
+#### 备注：
 
 以上脚本会自动判断 pocketbase 是否已经在运行，如果未运行，会自动拉起。但是请注意，当你 ctrl+c 或者 ctrl+z 终止进程时，pocketbase 进程不会被终止，直到你关闭terminal。
 
