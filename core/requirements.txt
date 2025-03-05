@@ -2,6 +2,7 @@ loguru
 openai
 pocketbase
 pydantic
+python-dotenv
 #json_repair==0.*
 beautifulsoup4
 requests
